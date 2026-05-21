@@ -23,4 +23,9 @@ class Supplier extends Model
     {
         return $this->hasMany(Rule::class)->orderBy('sort_order');
     }
+
+    public function columnMappings(): HasMany
+    {
+        return $this->hasMany(ColumnMapping::class);
+    }
 }
