@@ -26,7 +26,7 @@ class SupplierController extends Controller
     public function edit(Supplier $supplier)
     {
         return Inertia::render('suppliers/edit', [
-            'supplier' => $supplier,
+            'supplier' => $supplier->load('rules'),
         ]);
     }
 

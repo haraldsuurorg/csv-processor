@@ -1,5 +1,7 @@
 import { Form, Head, Link, router } from '@inertiajs/react';
+import { useState } from 'react';
 import InputError from '@/components/input-error';
+import RuleFormDialog, { type Rule } from '@/components/rule-form-dialog';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -11,28 +13,55 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import suppliers from '@/routes/suppliers';
+import suppliersRules from '@/routes/suppliers/rules';
 import type { BreadcrumbItem } from '@/types';
 
 type Supplier = {
     id: number;
     name: string;
     write_physical_csv: boolean;
+    rules: Rule[];
 };
 
 type Props = {
     supplier: Supplier;
 };
 
+function summarizeRule(rule: Rule): string {
+    switch (rule.type) {
+        case 'multiply':
+            return `${rule.config.column} × ${rule.config.factor}`;
+        case 'remove':
+            return `Drop "${rule.config.column}"`;
+        case 'regex':
+            return `${rule.config.column}: ${rule.config.pattern} → ${rule.config.replacement || '(empty)'}`;
+    }
+}
+
 export default function SuppliersEdit({ supplier }: Props) {
-    const handleDelete = () => {
+    const [editingRule, setEditingRule] = useState<Rule | 'new' | null>(null);
+    const [deletingRule, setDeletingRule] = useState<Rule | null>(null);
+
+    const handleDeleteSupplier = () => {
         router.delete(suppliers.destroy(supplier.id).url);
     };
+
+    const handleDeleteRule = () => {
+        if (!deletingRule) return;
+        router.delete(
+            suppliersRules.destroy({ supplier: supplier.id, rule: deletingRule.id }).url,
+            { onSuccess: () => setDeletingRule(null) },
+        );
+    };
+
+    const ruleForDialog = editingRule === 'new' ? undefined : editingRule ?? undefined;
 
     return (
         <>
@@ -42,7 +71,7 @@ export default function SuppliersEdit({ supplier }: Props) {
                 <div>
                     <h1 className="text-2xl font-semibold">{supplier.name}</h1>
                     <p className="mt-1 text-sm text-muted-foreground">
-                        Manage supplier settings.
+                        Manage supplier settings and processing rules.
                     </p>
                 </div>
 
@@ -101,6 +130,60 @@ export default function SuppliersEdit({ supplier }: Props) {
                 </Form>
 
                 <div className="mt-6 max-w-2xl border-t pt-6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h2 className="text-base font-semibold">Rules</h2>
+                            <p className="mt-1 text-sm text-muted-foreground">
+                                Applied in order to every uploaded CSV row.
+                            </p>
+                        </div>
+                        <Button onClick={() => setEditingRule('new')}>Add rule</Button>
+                    </div>
+
+                    <div className="mt-4 overflow-hidden rounded-xl border">
+                        {supplier.rules.length === 0 ? (
+                            <div className="py-8 text-center text-sm text-muted-foreground">
+                                No rules yet.
+                            </div>
+                        ) : (
+                            <ul className="divide-y">
+                                {supplier.rules.map((rule) => (
+                                    <li
+                                        key={rule.id}
+                                        className="flex items-center justify-between gap-3 p-3"
+                                    >
+                                        <div className="flex min-w-0 items-center gap-3">
+                                            <Badge variant="secondary" className="capitalize">
+                                                {rule.type}
+                                            </Badge>
+                                            <span className="truncate text-sm">
+                                                {summarizeRule(rule)}
+                                            </span>
+                                        </div>
+                                        <div className="flex shrink-0 items-center gap-1">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => setEditingRule(rule)}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => setDeletingRule(rule)}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                </div>
+
+                <div className="mt-6 max-w-2xl border-t pt-6">
                     <h2 className="text-base font-semibold">Danger zone</h2>
                     <p className="mt-1 text-sm text-muted-foreground">
                         Permanently delete this supplier and all associated data.
@@ -122,7 +205,7 @@ export default function SuppliersEdit({ supplier }: Props) {
                             <AlertDialogFooter>
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                                 <AlertDialogAction
-                                    onClick={handleDelete}
+                                    onClick={handleDeleteSupplier}
                                     className="bg-destructive hover:bg-destructive/90"
                                 >
                                     Delete supplier
@@ -132,6 +215,41 @@ export default function SuppliersEdit({ supplier }: Props) {
                     </AlertDialog>
                 </div>
             </div>
+
+            <RuleFormDialog
+                key={editingRule === 'new' ? 'new' : (editingRule?.id ?? 'closed')}
+                supplierId={supplier.id}
+                rule={ruleForDialog}
+                open={editingRule !== null}
+                onOpenChange={(open) => {
+                    if (!open) setEditingRule(null);
+                }}
+            />
+
+            <AlertDialog
+                open={deletingRule !== null}
+                onOpenChange={(open) => {
+                    if (!open) setDeletingRule(null);
+                }}
+            >
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Delete this rule?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            {deletingRule && summarizeRule(deletingRule)}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={handleDeleteRule}
+                            className="bg-destructive hover:bg-destructive/90"
+                        >
+                            Delete rule
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </>
     );
 }
