@@ -19,7 +19,7 @@ class UpdateRuleRequest extends FormRequest
             'type' => ['required', Rule::enum(RuleType::class)],
             'config' => ['required', 'array'],
             'config.column' => ['required', 'string', 'max:255'],
-            'config.factor' => ['required_if:type,multiply', 'numberic'],
+            'config.factor' => ['required_if:type,multiply', 'numeric'],
             'config.pattern' => ['requited_if:type,regex', 'string'],
             'config.replacement' => ['required_if:type,regex', 'string'],
         ];

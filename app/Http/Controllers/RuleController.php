@@ -15,19 +15,21 @@ class RuleController extends Controller
             ...$request->validated(),
             'sort_order' => ($supplier->rules()->max('sort_order') ?? 0) + 1,
         ]);
+
+        return redirect()->route('suppliers.edit', $supplier);
     }
 
-    public function update(UpdateRuleRequest $request, Rule $rule)
+    public function update(UpdateRuleRequest $request, Supplier $supplier, Rule $rule)
     {
         $rule->update($request->validated());
 
-        return redirect()->route('suppliers.edit', $rule->supplier_id);
+        return redirect()->route('suppliers.edit', $supplier);
     }
 
-    public function destroy(Rule $rule)
+    public function destroy(Supplier $supplier, Rule $rule)
     {
         $rule->delete();
 
-        return redirect()->route('suppliers.edit', $rule->supplier_id);
+        return redirect()->route('suppliers.edit', $supplier);
     }
 }

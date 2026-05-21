@@ -335,6 +335,7 @@ export default function SuppliersEdit({ supplier }: Props) {
                 key={editingRule === 'new' ? 'rule-new' : `rule-${editingRule?.id ?? 'closed'}`}
                 supplierId={supplier.id}
                 rule={ruleForDialog}
+                availableColumns={supplier.column_mappings.map((m) => m.source_column)}
                 open={editingRule !== null}
                 onOpenChange={(open) => {
                     if (!open) setEditingRule(null);

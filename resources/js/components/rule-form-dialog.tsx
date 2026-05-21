@@ -39,13 +39,28 @@ export type Rule = {
 type Props = {
     supplierId: number;
     rule?: Rule;
+    availableColumns: string[];
     open: boolean;
     onOpenChange: (open: boolean) => void;
 };
 
-export default function RuleFormDialog({ supplierId, rule, open, onOpenChange }: Props) {
+export default function RuleFormDialog({
+    supplierId,
+    rule,
+    availableColumns,
+    open,
+    onOpenChange,
+}: Props) {
     const isEdit = rule !== undefined;
     const [type, setType] = useState<RuleType>(rule?.type ?? 'multiply');
+
+    // If the rule was created against a column that has since been removed from mappings,
+    // keep it in the dropdown so editing doesn't get stuck on a phantom value.
+    const existingColumn = rule?.config.column;
+    const columnOptions =
+        existingColumn && !availableColumns.includes(existingColumn)
+            ? [...availableColumns, existingColumn]
+            : availableColumns;
 
     const formProps = isEdit
         ? suppliersRules.update.form({ supplier: supplierId, rule: rule.id })
@@ -87,15 +102,31 @@ export default function RuleFormDialog({ supplierId, rule, open, onOpenChange }:
 
                             <div className="grid gap-2">
                                 <Label htmlFor="config_column">Column</Label>
-                                <Input
-                                    id="config_column"
+                                <Select
                                     name="config[column]"
-                                    type="text"
-                                    required
-                                    defaultValue={rule?.config.column ?? ''}
-                                    placeholder="price"
-                                    autoComplete="off"
-                                />
+                                    defaultValue={rule?.config.column}
+                                    disabled={columnOptions.length === 0}
+                                >
+                                    <SelectTrigger id="config_column">
+                                        <SelectValue
+                                            placeholder={
+                                                columnOptions.length === 0
+                                                    ? 'Add a column mapping first'
+                                                    : 'Select a column'
+                                            }
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {columnOptions.map((column) => (
+                                            <SelectItem key={column} value={column}>
+                                                {column}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <p className="text-xs text-muted-foreground">
+                                    Source columns come from this supplier's mappings.
+                                </p>
                                 <InputError message={errors['config.column']} />
                             </div>
 
