@@ -20,6 +20,10 @@ class SupplierController extends Controller
     {
         return Inertia::render('suppliers/show', [
             'supplier' => $supplier->load('uploads'),
+            'breadcrumbs' => [
+                ['title' => 'Suppliers', 'href' => route('suppliers.index')],
+                ['title' => $supplier->name, 'href' => route('suppliers.show', $supplier)]
+            ],
         ]);
     }
 
@@ -34,6 +38,11 @@ class SupplierController extends Controller
     {
         return Inertia::render('suppliers/edit', [
             'supplier' => $supplier->load('rules', 'columnMappings'),
+            'breadcrumbs' => [
+                ['title' => 'Suppliers', 'href' => route('suppliers.index')],
+                ['title' => $supplier->name, 'href' => route('suppliers.show', $supplier)],
+                ['title' => 'Edit', 'href' => route('suppliers.edit', $supplier)],
+            ],
         ]);
     }
 

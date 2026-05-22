@@ -9,7 +9,6 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import suppliers from '@/routes/suppliers';
 import suppliersUploads from '@/routes/suppliers/uploads';
-import type { BreadcrumbItem } from '@/types';
 
 type Supplier = {
     id: number;
@@ -81,12 +80,3 @@ export default function SuppliersShow({ supplier }: Props) {
         </>
     );
 }
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Suppliers',
-        href: suppliers.index().url,
-    },
-];
-
-SuppliersShow.layout = { breadcrumbs };
