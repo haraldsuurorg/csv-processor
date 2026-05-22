@@ -16,11 +16,15 @@ class RegexRule implements RuleStrategy
         if (! isset($config['column']) || ! is_string($config['column'])) {
             throw new InvalidArgumentException('Regex rule requires a string "column".');
         }
+
         if (! isset($config['pattern']) || ! is_string($config['pattern'])) {
             throw new InvalidArgumentException('Regex rule requires a string "pattern".');
         }
-        if (! isset($config['replacement']) || ! is_string($config['replacement'])) {
-            throw new InvalidArgumentException('Regex rule requires a string "replacement".');
+
+        // Accept empty strings.
+        $replacement = $config['replacement'] ?? '';
+        if (! is_string($replacement)) {
+            throw new InvalidArgumentException('Regex rule "replacement" must be a string.');
         }
 
         $column = $config['column'];
