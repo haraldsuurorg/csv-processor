@@ -17,6 +17,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->scoped()
         ->only(['store', 'update', 'destroy']);
 
+    Route::post(
+        'suppliers/{supplier}/rules/{rule}/move',
+        [RuleController::class, 'move'],
+    )->scopeBindings()->name('suppliers.rules.move');
+
     Route::resource('suppliers.column-mappings', ColumnMappingController::class)
         ->scoped()
         ->only(['store', 'update', 'destroy']);

@@ -1,5 +1,6 @@
 import { Form, Head, Link, router } from '@inertiajs/react';
-import { useState } from 'react';
+import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
+import { type ReactNode, useState } from 'react';
 import ColumnMappingFormDialog, {
     type ColumnMapping,
 } from '@/components/column-mapping-form-dialog';
@@ -65,6 +66,14 @@ export default function SuppliersEdit({ supplier }: Props) {
         router.delete(
             suppliersRules.destroy({ supplier: supplier.id, rule: deletingRule.id }).url,
             { onSuccess: () => setDeletingRule(null) },
+        );
+    };
+
+    const handleMoveRule = (rule: Rule, direction: 'up' | 'down') => {
+        router.post(
+            suppliersRules.move({ supplier: supplier.id, rule: rule.id }).url,
+            { direction },
+            { preserveScroll: true },
         );
     };
 
@@ -222,7 +231,7 @@ export default function SuppliersEdit({ supplier }: Props) {
                             </div>
                         ) : (
                             <ul className="divide-y">
-                                {supplier.rules.map((rule) => (
+                                {supplier.rules.map((rule, index) => (
                                     <li
                                         key={rule.id}
                                         className="flex items-center justify-between gap-3 p-3"
@@ -236,6 +245,34 @@ export default function SuppliersEdit({ supplier }: Props) {
                                             </span>
                                         </div>
                                         <div className="flex shrink-0 items-center gap-1">
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        disabled={index === 0}
+                                                        onClick={() => handleMoveRule(rule, 'up')}
+                                                    >
+                                                        <ChevronUp className="h-4 w-4" />
+                                                        <span className="sr-only">Move up</span>
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>Move up</TooltipContent>
+                                            </Tooltip>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        disabled={index === supplier.rules.length - 1}
+                                                        onClick={() => handleMoveRule(rule, 'down')}
+                                                    >
+                                                        <ChevronDown className="h-4 w-4" />
+                                                        <span className="sr-only">Move down</span>
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>Move down</TooltipContent>
+                                            </Tooltip>
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
