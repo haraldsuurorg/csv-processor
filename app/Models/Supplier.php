@@ -28,4 +28,9 @@ class Supplier extends Model
     {
         return $this->hasMany(ColumnMapping::class);
     }
+
+    public function uploads(): HasMany
+    {
+        return $this->hasMany(Upload::class)->latest();
+    }
 }
