@@ -34,7 +34,7 @@ class RegexRule implements RuleStrategy
         }
 
         // Suppressing PHP's native warning so we can surface a clearer exception below.
-        $result = @preg_replace($config['pattern'], $config['replacement'], (string) $row[$column]);
+        $result = @preg_replace($config['pattern'], $replacement, (string) $row[$column]);
 
         if ($result === null) {
             throw new InvalidArgumentException(

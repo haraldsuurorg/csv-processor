@@ -52,8 +52,20 @@ class RegexRuleTest extends TestCase
 
         (new RegexRule)->apply(
             ['sku' => 'ABC'],
-            ['column' => 'sku', 'pattern' => '/x/'],
+            ['column' => 'sku'],
         );
+    }
+
+    public function test_empty_replacement_strips_matched_text(): void
+    {
+        $rule = new RegexRule;
+
+        $result = $rule->apply(
+            ['sku' => 'CRD-001'],
+            ['column' => 'sku', 'pattern' => '/^CRD-/'],
+        );
+
+        $this->assertSame('001', $result['sku']);
     }
 
     public function test_throws_when_pattern_is_invalid(): void

@@ -1,6 +1,6 @@
 import { router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, Trash2 } from 'lucide-react';
+import { ArrowUpDown, ExternalLink, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 import {
@@ -159,60 +159,77 @@ export default function SupplierUploadsTable({ supplierId, uploads }: Props) {
                 const upload = row.original;
                 return (
                     <div className="flex justify-end gap-1">
-                        <Button variant="ghost" size="sm" asChild>
-                            <a
-                                href={
-                                    suppliersUploads.downloadOriginal({
-                                        supplier: supplierId,
-                                        upload: upload.id,
-                                    }).url
-                                }
-                            >
-                                Original
-                            </a>
-                        </Button>
-                        {upload.physical_csv_written && (
-                            <Button variant="ghost" size="sm" asChild>
-                                <a
-                                    href={
-                                        suppliersUploads.downloadProcessed({
-                                            supplier: supplierId,
-                                            upload: upload.id,
-                                        }).url
-                                    }
-                                >
-                                    Processed
-                                </a>
-                            </Button>
-                        )}
-                        {upload.status === 'done' && (
-                            <Button variant="ghost" size="sm" asChild>
-                                <a
-                                    href={
-                                        suppliersUploads.export({
-                                            supplier: supplierId,
-                                            upload: upload.id,
-                                        }).url
-                                    }
-                                >
-                                    Export
-                                </a>
-                            </Button>
-                        )}
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                                    onClick={() => setDeletingUpload(upload)}
-                                >
-                                    <Trash2 className="h-4 w-4" />
-                                    <span className="sr-only">Delete upload</span>
+                                <Button variant="ghost" size="sm" asChild>
+                                    <a
+                                        href={
+                                            suppliersUploads.downloadOriginal({
+                                                supplier: supplierId,
+                                                upload: upload.id,
+                                            }).url
+                                        }
+                                    >
+                                        Original
+                                    </a>
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent>Delete upload</TooltipContent>
+                            <TooltipContent>
+                                Download the originally uploaded file
+                            </TooltipContent>
                         </Tooltip>
+                        {upload.physical_csv_written && (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button variant="ghost" size="sm" asChild>
+                                        <a
+                                            href={
+                                                suppliersUploads.downloadProcessed({
+                                                    supplier: supplierId,
+                                                    upload: upload.id,
+                                                }).url
+                                            }
+                                        >
+                                            Processed
+                                        </a>
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    Download the file on which the rules have been applied
+                                </TooltipContent>
+                            </Tooltip>
+                        )}
+                        {upload.status === 'done' && (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button variant="ghost" size="sm" asChild>
+                                        <a
+                                            href={
+                                                suppliersUploads.export({
+                                                    supplier: supplierId,
+                                                    upload: upload.id,
+                                                }).url
+                                            }
+                                        >
+                                            Export
+                                            <ExternalLink className="h-3 w-3" />
+                                        </a>
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    Download the file on which the rules and column name mapping have been applied
+                                </TooltipContent>
+                            </Tooltip>
+                        )}
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                            onClick={() => setDeletingUpload(upload)}
+                        >
+                            <Trash2 className="h-4 w-4" />
+                            <span className="sr-only">Delete upload</span>
+                        </Button>
                     </div>
                 );
             },
