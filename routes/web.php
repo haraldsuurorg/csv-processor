@@ -34,6 +34,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'suppliers/{supplier}/uploads/{upload}/download-processed',
         [UploadController::class, 'downloadProcessed'],
     )->scopeBindings()->name('suppliers.uploads.download-processed');
+
+    Route::get(
+        'suppliers/{supplier}/uploads/{upload}/export',
+        [UploadController::class, 'export'],
+    )->scopeBindings()->name('suppliers.uploads.export');
 });
 
 require __DIR__.'/settings.php';

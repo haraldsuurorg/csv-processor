@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUploadRequest;
 use App\Models\Supplier;
 use App\Models\Upload;
+use App\Services\CsvExporter;
 use App\Services\CsvProcessor;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -42,6 +43,18 @@ class UploadController extends Controller
         return Storage::download(
             $upload->processedPath(),
             "processed-{$upload->original_filename}",
+        );
+    }
+
+    public function export(
+        Supplier $supplier,
+        Upload $upload,
+        CsvExporter $exporter,
+    ): StreamedResponse {
+        return response()->streamDownload(
+            fn () => $exporter->streamToOutput($upload),
+            "export-{$upload->original_filename}",
+            ['Content-Type' => 'text/csv'],
         );
     }
 }
