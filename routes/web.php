@@ -11,7 +11,7 @@ Route::inertia('/', 'welcome')->name('home');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
 
-    Route::resource('suppliers', SupplierController::class)->except(['show', 'create']);
+    Route::resource('suppliers', SupplierController::class)->except(['create']);
 
     Route::resource('suppliers.rules', RuleController::class)
         ->scoped()

@@ -18,7 +18,7 @@ class UploadController extends Controller
     ) {
         $processor->process($supplier, $request->file('csv'));
 
-        return redirect()->route('suppliers.edit', $supplier);
+        return redirect()->route('suppliers.show', $supplier);
     }
 
     public function destroy(Supplier $supplier, Upload $upload)
@@ -27,7 +27,7 @@ class UploadController extends Controller
 
         $upload->delete();
 
-        return redirect()->route('suppliers.edit', $supplier);
+        return redirect()->route('suppliers.show', $supplier);
     }
 
     public function downloadOriginal(Supplier $supplier, Upload $upload): StreamedResponse

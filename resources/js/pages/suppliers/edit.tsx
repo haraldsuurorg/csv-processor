@@ -5,9 +5,6 @@ import ColumnMappingFormDialog, {
 } from '@/components/column-mapping-form-dialog';
 import InputError from '@/components/input-error';
 import RuleFormDialog, { type Rule } from '@/components/rule-form-dialog';
-import SupplierUploadsSection, {
-    type Upload,
-} from '@/components/supplier-uploads-section';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -36,7 +33,6 @@ type Supplier = {
     write_physical_csv: boolean;
     rules: Rule[];
     column_mappings: ColumnMapping[];
-    uploads: Upload[];
 };
 
 type Props = {
@@ -261,11 +257,6 @@ export default function SuppliersEdit({ supplier }: Props) {
                         )}
                     </div>
                 </div>
-
-                <SupplierUploadsSection
-                    supplierId={supplier.id}
-                    uploads={supplier.uploads}
-                />
 
                 <div className="mt-6 max-w-2xl border-t pt-6">
                     <h2 className="text-base font-semibold">Danger zone</h2>

@@ -16,6 +16,13 @@ class SupplierController extends Controller
         ]);
     }
 
+    public function show(Supplier $supplier)
+    {
+        return Inertia::render('suppliers/show', [
+            'supplier' => $supplier->load('uploads'),
+        ]);
+    }
+
     public function store(StoreSupplierRequest $request)
     {
         Supplier::create($request->validated());
@@ -26,7 +33,7 @@ class SupplierController extends Controller
     public function edit(Supplier $supplier)
     {
         return Inertia::render('suppliers/edit', [
-            'supplier' => $supplier->load('rules', 'columnMappings', 'uploads'),
+            'supplier' => $supplier->load('rules', 'columnMappings'),
         ]);
     }
 

@@ -158,8 +158,8 @@ export default function SuppliersIndex({ suppliers: supplierList }: Props) {
                                         </TableCell>
                                         <TableCell className="text-right">
                                             <Button variant="ghost" size="sm" asChild>
-                                                <Link href={suppliers.edit(supplier.id).url}>
-                                                    Edit
+                                                <Link href={suppliers.show(supplier.id).url}>
+                                                    Open
                                                 </Link>
                                             </Button>
                                         </TableCell>
