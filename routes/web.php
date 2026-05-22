@@ -2,11 +2,17 @@
 
 use App\Http\Controllers\ColumnMappingController;
 use App\Http\Controllers\RuleController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UploadController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
-Route::inertia('/', 'welcome')->name('home');
+Route::get('/', function () {
+    return Auth::check()
+        ? redirect()->route('suppliers.index')
+        : Inertia::render('welcome');
+})->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
