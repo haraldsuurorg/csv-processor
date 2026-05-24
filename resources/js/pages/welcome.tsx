@@ -84,22 +84,27 @@ export default function Welcome() {
                                     </span>
                                 </li>
                             </ul>
-                            <ul className="flex gap-3 text-sm leading-normal">
-                                <li>
-                                    <a
-                                        href="https://github.com/haraldsuurorg/csv-processor"
-                                        target="_blank"
-                                        className="inline-block rounded-sm border border-black bg-[#1b1b18] px-5 py-1.5 text-sm leading-normal text-white hover:border-black hover:bg-black dark:border-[#eeeeec] dark:bg-[#eeeeec] dark:text-[#1C1C1A] dark:hover:border-white dark:hover:bg-white"
-                                    >
-                                        View on GitHub
-                                    </a>
-                                </li>
-                            </ul>
+                            <div className="flex wrap gap-3 text-sm leading-normal">
+                                <a
+                                    href="https://csv-processor.laravel.cloud/login"
+                                    target=""
+                                    className="inline-block rounded-sm border border-black bg-[#1b1b18] px-5 py-1.5 text-sm leading-normal text-white hover:border-black hover:bg-black dark:border-[#eeeeec] dark:bg-[#eeeeec] dark:text-[#1C1C1A] dark:hover:border-white dark:hover:bg-white"
+                                >
+                                    Login
+                                </a>
+                                <a
+                                    href="https://github.com/haraldsuurorg/csv-processor"
+                                    target="_blank"
+                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                >
+                                    View on GitHub
+                                </a>
+                            </div>
                         </div>
                         <div className="relative -mb-px aspect-[335/364] w-full shrink-0 overflow-hidden rounded-t-lg bg-[#fff2f2] lg:mb-0 lg:-ml-px lg:aspect-auto lg:w-[438px] lg:rounded-t-none lg:rounded-r-lg dark:bg-[#161615] border-y border-r border-black/10 dark:border-white/15
 ">
                             <img
-                                src='/images/matrix.jpg'
+                                src='/images/matrix.gif'
                                 className='object-cover h-full w-full'
                             />
                         </div>
