@@ -50,6 +50,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'suppliers/{supplier}/uploads/{upload}/export',
         [UploadController::class, 'export'],
     )->scopeBindings()->name('suppliers.uploads.export');
+
+    Route::post(
+        'suppliers/{supplier}/uploads/{upload}/reprocess',
+        [UploadController::class, 'reprocess'],
+    )->scopeBindings()->name('suppliers.uploads.reprocess');
 });
 
 require __DIR__.'/settings.php';

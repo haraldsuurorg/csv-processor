@@ -33,6 +33,34 @@ class CsvProcessor
             'original.csv',
         );
 
+        $this->runProcessing($upload, $supplier);
+
+        return $upload;
+    }
+
+    public function reprocess(Upload $upload): Upload
+    {
+        $upload->processedRows()->delete();
+
+        if ($upload->physical_csv_written) {
+            Storage::delete($upload->processedPath());
+        }
+
+        $upload->update([
+            'status' => UploadStatus::Pending,
+            'error' => null,
+            'row_count' => null,
+            'physical_csv_written' => false,
+            'processed_at' => null,
+        ]);
+
+        $this->runProcessing($upload, $upload->supplier);
+
+        return $upload;
+    }
+
+    private function runProcessing(Upload $upload, Supplier $supplier): void
+    {
         try {
             [$rowCount, $physicalCsvWritten] = $this->processRows($upload, $supplier);
 
@@ -48,8 +76,6 @@ class CsvProcessor
                 'error' => $e->getMessage(),
             ]);
         }
-
-        return $upload;
     }
 
     /**

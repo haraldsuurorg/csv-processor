@@ -6,11 +6,11 @@ Process supplier CSV files through configurable rules and column mappings.
 
 For each supplier:
 
-1. **Column mappings** — map source CSV columns to canonical fields (`ProductName`, `Quantity`, `Price`, `SKU`)
-2. **Rules** transform values: `Multiply`, `Remove`, `Regex` — applied in DB-defined order on every upload
-3. **Upload** a CSV → eager parsing → rules applied → result stored row-by-row in `processed_rows`
-4. **Physical CSV file** optionally also written to disk if the per-supplier flag is on
-5. **Export** endpoint applies mappings on demand and streams the canonical CSV
+1. **Column mappings** — map supplier column names to standard fields (`ProductName`, `Quantity`, `Price`, `SKU`)
+2. **Rules** transform values: `Multiply`, `Remove`, `Regex` — applied in order on every upload
+3. **Upload** a CSV and the rules run, saving each row to `processed_rows`
+4. **Physical CSV** is also written to disk if the per-supplier flag is on
+5. **Export** applies the column mappings and downloads the CSV
 
 ## CSV format expectations
 

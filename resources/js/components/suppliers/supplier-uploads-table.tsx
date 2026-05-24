@@ -1,6 +1,6 @@
 import { router } from '@inertiajs/react';
 import type {ColumnDef} from '@tanstack/react-table';
-import { ArrowUpDown, ExternalLink, Trash2 } from 'lucide-react';
+import { ArrowUpDown, Check, ExternalLink, RefreshCw, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 import {
@@ -17,6 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 import suppliersUploads from '@/routes/suppliers/uploads';
 
 export type UploadStatus = 'pending' | 'done' | 'failed';
@@ -71,6 +72,43 @@ return;
                 upload: deletingUpload.id,
             }).url,
             { onSuccess: () => setDeletingUpload(null) },
+        );
+    };
+
+    const [reprocessingIds, setReprocessingIds] = useState<Set<number>>(new Set());
+    const [recentlyReprocessedIds, setRecentlyReprocessedIds] = useState<Set<number>>(new Set());
+
+    const handleReprocess = (upload: Upload) => {
+        router.post(
+            suppliersUploads.reprocess({
+                supplier: supplierId,
+                upload: upload.id,
+            }).url,
+            {},
+            {
+                onStart: () => {
+                    setReprocessingIds((prev) => new Set(prev).add(upload.id));
+                },
+                onFinish: () => {
+                    setReprocessingIds((prev) => {
+                        const next = new Set(prev);
+                        next.delete(upload.id);
+
+                        return next;
+                    });
+                },
+                onSuccess: () => {
+                    setRecentlyReprocessedIds((prev) => new Set(prev).add(upload.id));
+                    setTimeout(() => {
+                        setRecentlyReprocessedIds((prev) => {
+                            const next = new Set(prev);
+                            next.delete(upload.id);
+
+                            return next;
+                        });
+                    }, 1500);
+                },
+            },
         );
     };
 
@@ -226,6 +264,31 @@ return;
                                 </TooltipContent>
                             </Tooltip>
                         )}
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    disabled={reprocessingIds.has(upload.id)}
+                                    onClick={() => handleReprocess(upload)}
+                                >
+                                    {recentlyReprocessedIds.has(upload.id) ? (
+                                        <Check className="h-4 w-4 text-green-600 dark:text-green-500" />
+                                    ) : (
+                                        <RefreshCw
+                                            className={cn(
+                                                'h-4 w-4',
+                                                reprocessingIds.has(upload.id) && 'animate-spin',
+                                            )}
+                                        />
+                                    )}
+                                    <span className="sr-only">Reprocess upload</span>
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                Re-apply the current rules to this upload
+                            </TooltipContent>
+                        </Tooltip>
                         <Button
                             variant="ghost"
                             size="sm"

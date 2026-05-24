@@ -31,6 +31,13 @@ class UploadController extends Controller
         return redirect()->route('suppliers.show', $supplier);
     }
 
+    public function reprocess(Supplier $supplier, Upload $upload, CsvProcessor $processor)
+    {
+        $processor->reprocess($upload);
+
+        return redirect()->route('suppliers.show', $supplier);
+    }
+
     public function downloadOriginal(Supplier $supplier, Upload $upload): StreamedResponse
     {
         return Storage::download($upload->originalPath(), $upload->original_filename);
