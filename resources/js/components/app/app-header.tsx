@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { BookOpen, Building2, Folder, Menu, Search } from 'lucide-react';
 import AppLogo from '@/components/app/app-logo';
 import AppLogoIcon from '@/components/app/app-logo-icon';
 import { Breadcrumbs } from '@/components/breadcrumbs';
@@ -32,7 +32,7 @@ import { UserMenuContent } from '@/components/app/user-menu-content';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useInitials } from '@/hooks/use-initials';
 import { cn, toUrl } from '@/lib/utils';
-import { dashboard } from '@/routes';
+import suppliers from '@/routes/suppliers';
 import type { Auth } from '@/types/auth';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
@@ -42,9 +42,9 @@ type Props = {
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
+        title: 'Suppliers',
+        href: suppliers.index(),
+        icon: Building2,
     },
 ];
 
@@ -136,7 +136,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                     </div>
 
                     <Link
-                        href={dashboard()}
+                        href={suppliers.index()}
                         prefetch
                         className="flex items-center space-x-2"
                     >
