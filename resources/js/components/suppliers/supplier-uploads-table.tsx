@@ -217,7 +217,7 @@ export default function SupplierUploadsTable({ supplierId, uploads }: Props) {
                                     </Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                    Download the file on which the rules and column name mapping have been applied
+                                    Generate and download the file on which the rules and column name mapping have been applied
                                 </TooltipContent>
                             </Tooltip>
                         )}

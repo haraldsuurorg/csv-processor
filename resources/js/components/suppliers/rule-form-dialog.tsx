@@ -149,6 +149,55 @@ export default function RuleFormDialog({
 
                             {type === 'regex' && (
                                 <>
+                                    <div className="rounded-md bg-muted/50 p-3 text-xs leading-relaxed text-muted-foreground">
+                                        <p>
+                                            Find text matching{' '}
+                                            <strong className="text-foreground">Pattern</strong>{' '}
+                                            in the column and replace it with{' '}
+                                            <strong className="text-foreground">
+                                                Replacement
+                                            </strong>
+                                            .
+                                        </p>
+                                        <p className="mt-1.5">
+                                            Example: Pattern{' '}
+                                            <code className="rounded bg-background px-1 py-0.5 font-mono">
+                                                /^CRD-/
+                                            </code>{' '}
+                                            with Replacement{' '}
+                                            <code className="rounded bg-background px-1 py-0.5 font-mono">
+                                                BS-
+                                            </code>{' '}
+                                            turns{' '}
+                                            <code className="rounded bg-background px-1 py-0.5 font-mono">
+                                                CRD-001
+                                            </code>{' '}
+                                            into{' '}
+                                            <code className="rounded bg-background px-1 py-0.5 font-mono">
+                                                BS-001
+                                            </code>
+                                            .
+                                        </p>
+                                        <p className="mt-1.5">
+                                            Pattern uses PHP regex syntax (PCRE) and must be wrapped in slashes:{' '}
+                                            <code className="rounded bg-background px-1 py-0.5 font-mono">
+                                                /your-pattern/
+                                            </code>
+                                            . Add{' '}
+                                            <code className="rounded bg-background px-1 py-0.5 font-mono">
+                                                /i
+                                            </code>{' '}
+                                            at the end to ignore letter case (so{' '}
+                                            <code className="rounded bg-background px-1 py-0.5 font-mono">
+                                                /crd/i
+                                            </code>{' '}
+                                            matches CRD, crd, and Crd).
+                                        </p>
+                                        <p className='mt-1.5'>
+                                            Leave Replacement empty to remove the match.
+                                        </p>
+                                    </div>
+
                                     <div className="grid gap-2">
                                         <Label htmlFor="config_pattern">Pattern</Label>
                                         <Input
@@ -160,9 +209,6 @@ export default function RuleFormDialog({
                                             placeholder="/^OLD-/"
                                             autoComplete="off"
                                         />
-                                        <p className="text-xs text-muted-foreground">
-                                            PHP regex with delimiters (e.g. <code>/pattern/i</code>).
-                                        </p>
                                         <InputError message={errors['config.pattern']} />
                                     </div>
 
@@ -176,9 +222,6 @@ export default function RuleFormDialog({
                                             placeholder="NEW-"
                                             autoComplete="off"
                                         />
-                                        <p className="text-xs text-muted-foreground">
-                                            Use <code>$1</code>, <code>$2</code> for backreferences. Empty to delete the match.
-                                        </p>
                                         <InputError message={errors['config.replacement']} />
                                     </div>
                                 </>

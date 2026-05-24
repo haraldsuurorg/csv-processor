@@ -49,7 +49,7 @@ export default function SuppliersShow({ supplier }: Props) {
                     >
                         {({ processing, errors }) => (
                             <>
-                                <Label htmlFor="csv">Upload CSV</Label>
+                                <Label htmlFor="csv" className='ml-1 mb-1'>Upload CSV</Label>
                                 <div className="flex items-center gap-3">
                                     <Input
                                         id="csv"
@@ -64,6 +64,7 @@ export default function SuppliersShow({ supplier }: Props) {
                                         Upload
                                     </Button>
                                 </div>
+                                <p className='text-xs text-muted-foreground ml-1'>.csv or .txt files up to 10 MB</p>
                                 {errors.csv && (
                                     <p className="text-sm text-destructive">{errors.csv}</p>
                                 )}
