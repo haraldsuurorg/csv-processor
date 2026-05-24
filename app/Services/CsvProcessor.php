@@ -9,7 +9,6 @@ use App\Models\Upload;
 use App\Services\RuleStrategies\RuleStrategyResolver;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use League\Csv\Info;
 use League\Csv\Reader;
 use League\Csv\Writer;
 use Throwable;
@@ -59,7 +58,6 @@ class CsvProcessor
     private function processRows(Upload $upload, Supplier $supplier): array
     {
         $reader = Reader::from(Storage::path($upload->originalPath()), 'r');
-        $reader->setDelimiter($this->detectDelimiter($reader));
         $reader->setHeaderOffset(0);
 
         $strategies = $supplier->rules()->orderBy('sort_order')->get()
@@ -84,7 +82,7 @@ class CsvProcessor
 
             $buffer[] = [
                 'upload_id' => $upload->id,
-                'data' => json_encode($row),
+                'data' => json_encode($row, JSON_THROW_ON_ERROR),
             ];
 
             if ($writer !== null) {
@@ -108,13 +106,5 @@ class CsvProcessor
         }
 
         return [$rowCount, $writer !== null];
-    }
-
-    private function detectDelimiter(Reader $reader):string
-    {
-        $stats = Info::getDelimiterStats($reader, [',', ';'], 5);
-        arsort($stats);
-
-        return (string) array_key_first($stats);
     }
 }
