@@ -16,13 +16,7 @@ import {
 import suppliers from '@/routes/suppliers';
 import type { NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Suppliers',
-        href: suppliers.index(),
-        icon: Building2,
-    },
-];
+const mainNavItems: NavItem[] = [];
 
 const footerNavItems: NavItem[] = [
     {
@@ -48,7 +42,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                {/* <NavMain items={mainNavItems} /> */}
             </SidebarContent>
 
             <SidebarFooter>
