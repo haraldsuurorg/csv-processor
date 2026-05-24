@@ -1,8 +1,7 @@
 import { Form, Head, Link } from '@inertiajs/react';
 
-import SupplierUploadsTable, {
-    type Upload,
-} from '@/components/suppliers/supplier-uploads-table';
+import SupplierUploadsTable from '@/components/suppliers/supplier-uploads-table';
+import type {Upload} from '@/components/suppliers/supplier-uploads-table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

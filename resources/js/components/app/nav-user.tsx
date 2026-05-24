@@ -1,5 +1,7 @@
 import { usePage } from '@inertiajs/react';
 import { ChevronsUpDown } from 'lucide-react';
+import { UserInfo } from '@/components/app/user-info';
+import { UserMenuContent } from '@/components/app/user-menu-content';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,8 +13,6 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/components/ui/sidebar';
-import { UserInfo } from '@/components/app/user-info';
-import { UserMenuContent } from '@/components/app/user-menu-content';
 import { useIsMobile } from '@/hooks/use-mobile';
 import type { Auth } from '@/types/auth';
 

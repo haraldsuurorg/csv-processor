@@ -1,5 +1,5 @@
 import { router } from '@inertiajs/react';
-import { type ColumnDef } from '@tanstack/react-table';
+import type {ColumnDef} from '@tanstack/react-table';
 import { ArrowUpDown, ExternalLink, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -61,7 +61,10 @@ export default function SupplierUploadsTable({ supplierId, uploads }: Props) {
     const [deletingUpload, setDeletingUpload] = useState<Upload | null>(null);
 
     const handleDelete = () => {
-        if (!deletingUpload) return;
+        if (!deletingUpload) {
+return;
+}
+
         router.delete(
             suppliersUploads.destroy({
                 supplier: supplierId,
@@ -94,6 +97,7 @@ export default function SupplierUploadsTable({ supplierId, uploads }: Props) {
             header: 'Status',
             cell: ({ row }) => {
                 const upload = row.original;
+
                 return (
                     <div className="flex flex-col gap-0.5">
                         <Badge
@@ -157,6 +161,7 @@ export default function SupplierUploadsTable({ supplierId, uploads }: Props) {
             header: () => <span className="sr-only">Actions</span>,
             cell: ({ row }) => {
                 const upload = row.original;
+
                 return (
                     <div className="flex justify-end gap-1">
                         <Tooltip>
@@ -247,7 +252,9 @@ export default function SupplierUploadsTable({ supplierId, uploads }: Props) {
             <AlertDialog
                 open={deletingUpload !== null}
                 onOpenChange={(open) => {
-                    if (!open) setDeletingUpload(null);
+                    if (!open) {
+setDeletingUpload(null);
+}
                 }}
             >
                 <AlertDialogContent>

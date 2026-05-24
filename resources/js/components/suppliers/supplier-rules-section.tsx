@@ -1,9 +1,11 @@
 import { router } from '@inertiajs/react';
 import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
-import { type ReactNode, useState } from 'react';
+import {  useState } from 'react';
+import type {ReactNode} from 'react';
 
-import { type ColumnMapping } from '@/components/suppliers/column-mapping-form-dialog';
-import RuleFormDialog, { type Rule } from '@/components/suppliers/rule-form-dialog';
+import type {ColumnMapping} from '@/components/suppliers/column-mapping-form-dialog';
+import RuleFormDialog from '@/components/suppliers/rule-form-dialog';
+import type {Rule} from '@/components/suppliers/rule-form-dialog';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -76,7 +78,10 @@ export default function SupplierRulesSection({ supplier }: Props) {
     const [deletingRule, setDeletingRule] = useState<Rule | null>(null);
 
     const handleDelete = () => {
-        if (!deletingRule) return;
+        if (!deletingRule) {
+return;
+}
+
         router.delete(
             suppliersRules.destroy({ supplier: supplier.id, rule: deletingRule.id }).url,
             { onSuccess: () => setDeletingRule(null) },
@@ -190,14 +195,18 @@ export default function SupplierRulesSection({ supplier }: Props) {
                 availableColumns={availableColumns}
                 open={editingRule !== null}
                 onOpenChange={(open) => {
-                    if (!open) setEditingRule(null);
+                    if (!open) {
+setEditingRule(null);
+}
                 }}
             />
 
             <AlertDialog
                 open={deletingRule !== null}
                 onOpenChange={(open) => {
-                    if (!open) setDeletingRule(null);
+                    if (!open) {
+setDeletingRule(null);
+}
                 }}
             >
                 <AlertDialogContent>

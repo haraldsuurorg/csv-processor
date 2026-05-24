@@ -1,8 +1,7 @@
 import { Link } from '@inertiajs/react';
-import { Building2, FolderGit2 } from 'lucide-react';
+import { FolderGit2 } from 'lucide-react';
 import AppLogo from '@/components/app/app-logo';
 import { NavFooter } from '@/components/app/nav-footer';
-import { NavMain } from '@/components/app/nav-main';
 import { NavUser } from '@/components/app/nav-user';
 import {
     Sidebar,
@@ -15,8 +14,6 @@ import {
 } from '@/components/ui/sidebar';
 import suppliers from '@/routes/suppliers';
 import type { NavItem } from '@/types';
-
-const mainNavItems: NavItem[] = [];
 
 const footerNavItems: NavItem[] = [
     {
@@ -41,9 +38,7 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
-                {/* <NavMain items={mainNavItems} /> */}
-            </SidebarContent>
+            <SidebarContent />
 
             <SidebarFooter>
                 <NavFooter items={footerNavItems} className="mt-auto" />

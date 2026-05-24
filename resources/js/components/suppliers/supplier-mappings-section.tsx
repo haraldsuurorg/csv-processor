@@ -2,9 +2,8 @@ import { router } from '@inertiajs/react';
 import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
-import ColumnMappingFormDialog, {
-    type ColumnMapping,
-} from '@/components/suppliers/column-mapping-form-dialog';
+import ColumnMappingFormDialog from '@/components/suppliers/column-mapping-form-dialog';
+import type {ColumnMapping} from '@/components/suppliers/column-mapping-form-dialog';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -32,7 +31,10 @@ export default function SupplierMappingsSection({ supplier }: Props) {
     const [deletingMapping, setDeletingMapping] = useState<ColumnMapping | null>(null);
 
     const handleDelete = () => {
-        if (!deletingMapping) return;
+        if (!deletingMapping) {
+return;
+}
+
         router.delete(
             suppliersColumnMappings.destroy({
                 supplier: supplier.id,
@@ -117,14 +119,18 @@ export default function SupplierMappingsSection({ supplier }: Props) {
                 mapping={mappingForDialog}
                 open={editingMapping !== null}
                 onOpenChange={(open) => {
-                    if (!open) setEditingMapping(null);
+                    if (!open) {
+setEditingMapping(null);
+}
                 }}
             />
 
             <AlertDialog
                 open={deletingMapping !== null}
                 onOpenChange={(open) => {
-                    if (!open) setDeletingMapping(null);
+                    if (!open) {
+setDeletingMapping(null);
+}
                 }}
             >
                 <AlertDialogContent>

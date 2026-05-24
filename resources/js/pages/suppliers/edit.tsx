@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 
-import { type ColumnMapping } from '@/components/suppliers/column-mapping-form-dialog';
-import { type Rule } from '@/components/suppliers/rule-form-dialog';
+import type {ColumnMapping} from '@/components/suppliers/column-mapping-form-dialog';
+import type {Rule} from '@/components/suppliers/rule-form-dialog';
 import SupplierDangerZone from '@/components/suppliers/supplier-danger-zone';
 import SupplierMappingsSection from '@/components/suppliers/supplier-mappings-section';
 import SupplierRulesSection from '@/components/suppliers/supplier-rules-section';

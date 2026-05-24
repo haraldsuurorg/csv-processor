@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Building2, Folder, Menu, Search } from 'lucide-react';
 import AppLogo from '@/components/app/app-logo';
 import AppLogoIcon from '@/components/app/app-logo-icon';
+import { UserMenuContent } from '@/components/app/user-menu-content';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -28,13 +29,12 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { UserMenuContent } from '@/components/app/user-menu-content';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useInitials } from '@/hooks/use-initials';
 import { cn, toUrl } from '@/lib/utils';
 import suppliers from '@/routes/suppliers';
-import type { Auth } from '@/types/auth';
 import type { BreadcrumbItem, NavItem } from '@/types';
+import type { Auth } from '@/types/auth';
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];

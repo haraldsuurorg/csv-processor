@@ -1,6 +1,6 @@
 import { Form, Head } from '@inertiajs/react';
-import InputError from '@/components/input-error';
 import PasswordInput from '@/components/app/password-input';
+import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
