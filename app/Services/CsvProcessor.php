@@ -83,7 +83,7 @@ class CsvProcessor
      */
     private function processRows(Upload $upload, Supplier $supplier): array
     {
-        $reader = Reader::from(Storage::path($upload->originalPath()), 'r');
+        $reader = Reader::fromString(Storage::get($upload->originalPath()));
         $reader->setHeaderOffset(0);
 
         $strategies = $supplier->rules()->orderBy('sort_order')->get()
@@ -93,8 +93,10 @@ class CsvProcessor
             ]);
 
         $writer = null;
+        $writeStream = null;
         if ($supplier->write_physical_csv) {
-            $writer = Writer::from(Storage::path($upload->processedPath()), 'w+');
+            $writeStream = fopen('php://temp', 'r+');
+            $writer = Writer::from($writeStream);
         }
 
         $rowCount = 0;
@@ -129,6 +131,12 @@ class CsvProcessor
 
         if (!empty($buffer)) {
             ProcessedRow::insert($buffer);
+        }
+
+        if ($writeStream !== null) {
+            rewind($writeStream);
+            Storage::writeStream($upload->processedPath(), $writeStream);
+            fclose($writeStream);
         }
 
         return [$rowCount, $writer !== null];
