@@ -6,20 +6,29 @@ import SupplierDangerZone from '@/components/suppliers/supplier-danger-zone';
 import SupplierMappingsSection from '@/components/suppliers/supplier-mappings-section';
 import SupplierRulesSection from '@/components/suppliers/supplier-rules-section';
 import SupplierSettingsForm from '@/components/suppliers/supplier-settings-form';
+import type { DecimalSeparator, Delimiter, EnumOption } from '@/types';
 
 type Supplier = {
     id: number;
     name: string;
     write_physical_csv: boolean;
+    delimiter: Delimiter;
+    decimal_separator: DecimalSeparator;
     rules: Rule[];
     column_mappings: ColumnMapping[];
 };
 
 type Props = {
     supplier: Supplier;
+    delimiterOptions: EnumOption<Delimiter>[];
+    decimalSeparatorOptions: EnumOption<DecimalSeparator>[];
 };
 
-export default function SuppliersEdit({ supplier }: Props) {
+export default function SuppliersEdit({
+    supplier,
+    delimiterOptions,
+    decimalSeparatorOptions,
+}: Props) {
     return (
         <>
             <Head title={`Edit ${supplier.name}`} />
@@ -32,7 +41,11 @@ export default function SuppliersEdit({ supplier }: Props) {
                     </p>
                 </div>
 
-                <SupplierSettingsForm supplier={supplier} />
+                <SupplierSettingsForm
+                    supplier={supplier}
+                    delimiterOptions={delimiterOptions}
+                    decimalSeparatorOptions={decimalSeparatorOptions}
+                />
 
                 <SupplierMappingsSection supplier={supplier} />
 

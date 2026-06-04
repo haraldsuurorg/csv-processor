@@ -16,13 +16,11 @@ For each supplier:
 
 Supports standard CSV per international conventions:
 
-- Comma-delimited
-- Period as decimal separator
 - No thousand separators
 - First row is treated as headers
 - UTF-8 encoded
 
-EU-style formats (semicolon delimiter, comma decimal) are out of scope. Proper support would add per-supplier locale via PHP's `NumberFormatter`.
+The delimiter and decimal separator can be configured based on supplier. Both US (comma as delimiter and period as decimal separator) and EU (semicolon as delimiter and comma as decimal separator) standards are available options.
 
 ## Brief interpretation notes
 

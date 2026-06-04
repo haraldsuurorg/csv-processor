@@ -196,8 +196,8 @@ return;
                 open={editingRule !== null}
                 onOpenChange={(open) => {
                     if (!open) {
-setEditingRule(null);
-}
+                        setEditingRule(null);
+                    }
                 }}
             />
 
@@ -205,8 +205,8 @@ setEditingRule(null);
                 open={deletingRule !== null}
                 onOpenChange={(open) => {
                     if (!open) {
-setDeletingRule(null);
-}
+                        setDeletingRule(null);
+                    }
                 }}
             >
                 <AlertDialogContent>

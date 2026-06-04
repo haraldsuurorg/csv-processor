@@ -85,11 +85,15 @@ class CsvProcessor
     {
         $reader = Reader::fromString(Storage::get($upload->originalPath()));
         $reader->setHeaderOffset(0);
+        $reader->setDelimiter($supplier->delimiter->value);
 
         $strategies = $supplier->rules()->orderBy('sort_order')->get()
             ->map(fn ($rule) => [
                 'strategy' => $this->resolver->resolve($rule->type),
-                'config' => $rule->config,
+                'config' => [
+                    ...$rule->config,
+                    'decimal_separator' => $supplier->decimal_separator->value,
+                ],
             ]);
 
         $writer = null;
@@ -97,6 +101,7 @@ class CsvProcessor
         if ($supplier->write_physical_csv) {
             $writeStream = fopen('php://temp', 'r+');
             $writer = Writer::from($writeStream);
+            $writer->setDelimiter($supplier->delimiter->value);
         }
 
         $rowCount = 0;

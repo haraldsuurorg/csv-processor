@@ -1,9 +1,8 @@
 import { Form, Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
-import InputError from '@/components/input-error';
+import SupplierFormFields from '@/components/suppliers/supplier-form-fields';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
     Dialog,
     DialogContent,
@@ -13,8 +12,6 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import {
     Table,
@@ -25,19 +22,26 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import suppliers from '@/routes/suppliers';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, DecimalSeparator, Delimiter, EnumOption } from '@/types';
 
 type Supplier = {
     id: number;
     name: string;
     write_physical_csv: boolean;
+    delimiter: Delimiter;
+    decimal_separator: DecimalSeparator;
 };
 
 type Props = {
     suppliers: Supplier[];
+    delimiterOptions: EnumOption<Delimiter>[];
+    defaultDelimiter: Delimiter;
+    decimalSeparatorOptions: EnumOption<DecimalSeparator>[];
+    defaultDecimalSeparator: DecimalSeparator;
 };
 
-export default function SuppliersIndex({ suppliers: supplierList }: Props) {
+
+export default function SuppliersIndex({ suppliers: supplierList, delimiterOptions, defaultDelimiter, decimalSeparatorOptions, defaultDecimalSeparator }: Props) {
     const [createOpen, setCreateOpen] = useState(false);
 
     return (
@@ -69,39 +73,18 @@ export default function SuppliersIndex({ suppliers: supplierList }: Props) {
                                 onSuccess={() => setCreateOpen(false)}
                                 resetOnSuccess
                                 disableWhileProcessing
-                                className="flex flex-col gap-6"
+                                className="flex flex-col gap-8"
                             >
                                 {({ processing, errors }) => (
                                     <>
-                                        <div className="grid gap-2">
-                                            <Label htmlFor="name">Name</Label>
-                                            <Input
-                                                id="name"
-                                                name="name"
-                                                type="text"
-                                                required
-                                                autoFocus
-                                                autoComplete="off"
-                                                placeholder="Acme Imports"
-                                            />
-                                            <InputError message={errors.name} />
-                                        </div>
-
-                                        <div className="flex items-start gap-3">
-                                            <Checkbox
-                                                id="write_physical_csv"
-                                                name="write_physical_csv"
-                                            />
-                                            <div className="grid gap-1">
-                                                <Label htmlFor="write_physical_csv">
-                                                    Write physical CSV file
-                                                </Label>
-                                                <p className="text-sm text-muted-foreground">
-                                                    Also save processed uploads as a CSV file to disk.
-                                                </p>
-                                                <InputError message={errors.write_physical_csv} />
-                                            </div>
-                                        </div>
+                                        <SupplierFormFields
+                                            errors={errors}
+                                            defaultDelimiter={defaultDelimiter}
+                                            defaultDecimalSeparator={defaultDecimalSeparator}
+                                            delimiterOptions={delimiterOptions}
+                                            decimalSeparatorOptions={decimalSeparatorOptions}
+                                            autoFocusName
+                                        />
 
                                         <DialogFooter>
                                             <Button

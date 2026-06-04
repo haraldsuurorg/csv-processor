@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\DecimalSeparator;
+use App\Enums\Delimiter;
 use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
 use App\Models\Supplier;
@@ -13,6 +15,10 @@ class SupplierController extends Controller
     {
         return Inertia::render('suppliers/index', [
             'suppliers' => Supplier::orderBy('name')->get(),
+            'delimiterOptions' => Delimiter::cases(),
+            'defaultDelimiter' => Delimiter::Comma->value,
+            'decimalSeparatorOptions' => DecimalSeparator::cases(),
+            'defaultDecimalSeparator' => DecimalSeparator::Period->value,
         ]);
     }
 
@@ -38,6 +44,8 @@ class SupplierController extends Controller
     {
         return Inertia::render('suppliers/edit', [
             'supplier' => $supplier->load('rules', 'columnMappings'),
+            'delimiterOptions' => Delimiter::cases(),
+            'decimalSeparatorOptions' => DecimalSeparator::cases(),
             'breadcrumbs' => [
                 ['title' => 'Suppliers', 'href' => route('suppliers.index')],
                 ['title' => $supplier->name, 'href' => route('suppliers.show', $supplier)],

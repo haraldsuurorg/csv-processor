@@ -56,4 +56,28 @@ class MultiplyRuleTest extends TestCase
 
         (new MultiplyRule)->apply(['price' => 10], ['column' => 'price']);
     }
+
+    public function test_multiplies_value_with_comma_decimal_separator(): void
+    {
+        $rule = new MultiplyRule;
+
+        $result = $rule->apply(
+            ['price' => '12,50'],
+            ['column' => 'price', 'factor' => 2, 'decimal_separator' => ','],
+        );
+
+        $this->assertSame(25.0, $result['price']);
+    }
+
+    public function test_defaults_to_period_when_decimal_separator_missing(): void
+    {
+        $rule = new MultiplyRule;
+
+        $result = $rule->apply(
+            ['price' => '12.50'],
+            ['column' => 'price', 'factor' => 2],
+        );
+
+        $this->assertSame(25.0, $result['price']);
+    }
 }

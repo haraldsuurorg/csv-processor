@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Enums\DecimalSeparator;
+use App\Enums\Delimiter;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreSupplierRequest extends FormRequest
@@ -17,6 +19,8 @@ class StoreSupplierRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'write_physical_csv' => ['boolean'],
+            'delimiter' => ['required', Rule::enum(Delimiter::class)],
+            'decimal_separator' => ['required', 'different:delimiter', Rule::enum(DecimalSeparator::class)],
         ];
     }
 }

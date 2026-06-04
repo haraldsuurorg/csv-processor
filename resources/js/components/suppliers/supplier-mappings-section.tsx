@@ -32,8 +32,8 @@ export default function SupplierMappingsSection({ supplier }: Props) {
 
     const handleDelete = () => {
         if (!deletingMapping) {
-return;
-}
+            return;
+        }
 
         router.delete(
             suppliersColumnMappings.destroy({
@@ -120,8 +120,8 @@ return;
                 open={editingMapping !== null}
                 onOpenChange={(open) => {
                     if (!open) {
-setEditingMapping(null);
-}
+                        setEditingMapping(null);
+                    }
                 }}
             />
 
@@ -129,8 +129,8 @@ setEditingMapping(null);
                 open={deletingMapping !== null}
                 onOpenChange={(open) => {
                     if (!open) {
-setDeletingMapping(null);
-}
+                        setDeletingMapping(null);
+                    }
                 }}
             >
                 <AlertDialogContent>

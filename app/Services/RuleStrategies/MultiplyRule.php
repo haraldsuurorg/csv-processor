@@ -8,7 +8,11 @@ class MultiplyRule implements RuleStrategy
 {
     /**
      * @param  array<string, mixed>  $row
-     * @param  array{column: string, factor: float|int|string}  $config
+     * @param  array{
+     *  column: string,
+     *  factor: float|int|string,
+     *  decimal_separator?: string,
+     * } $config
      * @return array<string, mixed>
      */
     public function apply(array $row, array $config): array
@@ -26,7 +30,11 @@ class MultiplyRule implements RuleStrategy
             return $row;
         }
 
-        $row[$column] = (float) $row[$column] * (float) $config['factor'];
+        $raw = (string) $row[$column];
+        if (($config['decimal_separator'] ?? '.') === ',') {
+            $raw = str_replace(',', '.', $raw);
+        }
+        $row[$column] = (float) $raw * (float) $config['factor'];
 
         return $row;
     }
